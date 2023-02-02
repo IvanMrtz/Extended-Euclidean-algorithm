@@ -15,9 +15,6 @@ public class Interfaz extends JFrame
 {
     int count = 1;
     
-    int countFirstFactor = 0;
-    int countSecondFactor = 0;
-    
     JTextField aValue, bValue;
     JTextArea result;
     JButton generateButton;
@@ -87,15 +84,14 @@ public class Interfaz extends JFrame
         container.add(generateButton, constraints);
     }
     
-    public int[] Euclides_Extended(String a, String b, String concatenator, int saveB, int saveR, int[] savePairOfB, int[] savePairOfModule) {
-        int iB;
+    public int[] Euclides_Extended(String a, String b, String concatenator, int saveB, int[] savePairOfB, int[] savePairOfModule) {
+        int iB = Integer.parseInt(b);
         int iA;
         
         if(concatenator == "") {
             concatenator = b;
 
             iA = Integer.parseInt(a);
-            iB = Integer.parseInt(b);
             
             savePairOfB[0] = 0;
             savePairOfB[1] = 1;
@@ -104,7 +100,6 @@ public class Interfaz extends JFrame
             savePairOfModule[1] = -1 * (iA - iA%iB)/iB;
         }else {
             iA = saveB;
-            iB = saveR;
             
             int[] savedCombinedMultiplied = {savePairOfModule[0] * -1*(iA - iA%iB)/iB, savePairOfModule[1] * -1*(iA - iA%iB)/iB};
             int[] modulePair = {savedCombinedMultiplied[0] + savePairOfB[0], savedCombinedMultiplied[1] + savePairOfB[1]};
@@ -117,14 +112,14 @@ public class Interfaz extends JFrame
         count++;
         
         if(iB % (iA%iB) != 0) {
-            return Euclides_Extended(concatenator, Integer.toString(iA%iB), module, iB, iA%iB, savePairOfB, savePairOfModule);
+            return Euclides_Extended(concatenator, Integer.toString(iA%iB), module, iB, savePairOfB, savePairOfModule);
         }else {
             return savePairOfModule;
         }
     }
     
     public void USABLE_Euclides_Extended(int a, int b) {
-        int[] values = Euclides_Extended(Integer.toString(a), Integer.toString(b), "", 0, 0, new int[2], new int[2]);
+        int[] values = Euclides_Extended(Integer.toString(a), Integer.toString(b), "", 0, new int[2], new int[2]);
         
         result.append("\nStep n°" + count + "  --->  " + a + "*(" + values[0] + ")" + " + " + b + "*("+ values[1] + ")");
     }
