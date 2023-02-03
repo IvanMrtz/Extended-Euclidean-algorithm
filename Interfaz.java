@@ -23,7 +23,7 @@ public class Interfaz extends JFrame
     public Interfaz(String title) {
         super(title);
         
-        JOptionPane.showMessageDialog(null, "Rules: a>=b, a<>0, b<>0");
+        JOptionPane.showMessageDialog(null, "the algorithm assumes that b is different from 0.");
         
         setSize(450, 250);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -84,12 +84,11 @@ public class Interfaz extends JFrame
         container.add(generateButton, constraints);
     }
     
-    public int[] Euclides_Extended(String a, String b, String concatenator, int saveB, int[] savePairOfB, int[] savePairOfModule) {
-        int iB = Integer.parseInt(b);
+    public int[] Euclides_Extended(String a, int iB, String concatenator, int saveB, int[] savePairOfB, int[] savePairOfModule) {
         int iA;
         
         if(concatenator == "") {
-            concatenator = b;
+            concatenator = Integer.toString(iB);
 
             iA = Integer.parseInt(a);
             
@@ -108,20 +107,20 @@ public class Interfaz extends JFrame
             savePairOfModule = modulePair;
         }
         String module = "(" + a + ")" + "-" + (iA - iA%iB)/iB + "*("+ concatenator + ")";
-        result.append("\nStep n°" + count + "  --->  " + module);
+        result.append("\nStep n°" + count + "  --->  " + module + " = " + iA%iB);
         count++;
         
-        if(iB % (iA%iB) != 0) {
-            return Euclides_Extended(concatenator, Integer.toString(iA%iB), module, iB, savePairOfB, savePairOfModule);
+        if(iA%iB != 0 && iB % (iA%iB) != 0) {
+            return Euclides_Extended(concatenator, iA%iB, module, iB, savePairOfB, savePairOfModule);
         }else {
             return savePairOfModule;
         }
     }
     
     public void USABLE_Euclides_Extended(int a, int b) {
-        int[] values = Euclides_Extended(Integer.toString(a), Integer.toString(b), "", 0, new int[2], new int[2]);
+        int[] values = Euclides_Extended(Integer.toString(a), b, "", 0, new int[2], new int[2]);
         
-        result.append("\nStep n°" + count + "  --->  " + a + "*(" + values[0] + ")" + " + " + b + "*("+ values[1] + ")");
+        result.append("\nStep n°" + count + "  --->  " + a + "*(" + values[0] + ")" + " + " + b + "*("+ values[1] + ")"  + " = " + (a*values[0] + b*values[1]));
     }
     
     private class ListenCalculateButton implements ActionListener {
